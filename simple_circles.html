@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+    <script type="text/javascript"
+            src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js">
+    </script>
+    <script src="http://d3js.org/d3.v2.js"></script>
+</head>
+<body>
+<h1>Select and Transition</h1>
+
+<div id="rect"/>
+
+</body>
+<script type="text/javascript">
+    $(function() {
+        doD3();
+    });
+
+    function doD3() {
+        var canvas = createCanvas();
+        drawCircles(canvas);
+    }
+
+    function drawCircles(canvas){
+        var data = [
+            {x: 1, y :  75},
+            {x: 2, y : 100},
+            {x : 3, y :  50},
+            {x : 4, y: 100}
+        ];
+
+		canvas.selectAll(".little")
+		      .data(data)
+		    .enter().append("circle")
+		      .attr("class", "little")
+		      .attr("cx", function(datum, index) { return 75 * datum.x; })
+		      .attr("cy", function(datum) { return datum.y; })
+		      .attr("r", 12);
+		
+		canvas.selectAll(".select").remove();
+
+		canvas.selectAll(".select")
+			        .data(data)
+			      .enter().append("circle")
+			        .attr("class", "select")
+			        .attr("cx", function(datum, index) { return 75 * datum.x; })
+			        .attr("cy", 10)
+			        .attr("r", 60)
+			        .style("fill", "none")
+			        .style("stroke", "red")
+			        .style("stroke-opacity", 1e-6)
+			        .style("stroke-width", 3)
+			      .transition()
+			        .duration(1750)
+			        .attr("r", 12)
+					.attr("cy", function(datum){ return datum.y; })
+			        .style("stroke-opacity", 1);
+	}
+
+	function createCanvas(){
+        var rectDemo = d3.select("#rect").
+                append("svg:svg").
+                attr("width", 400).
+                attr("height", 400);
+
+        return rectDemo;
+    }
+    
+</script>
+</html>
