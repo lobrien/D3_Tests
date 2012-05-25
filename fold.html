@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+    <script type="text/javascript"
+            src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js">
+    </script>
+    <script src="http://d3js.org/d3.v2.js"></script>
+</head>
+<body>
+<h1>Using previous calculation as basis of current calculdation</h1>
+<p>OK, so the intent is to create an element whose location is based on a previously appended element (i.e., if you were making a stacked bar chart).</p>
+<p>A: OK, super-easy: Just use the f(datum,index) version and refer to index -1</p>
+<div id="rect"/>
+
+</body>
+<script type="text/javascript">
+    $(function() {
+        doD3();
+    });
+
+    function doD3() {
+        var canvas = createCanvas();
+        drawCircles(canvas);
+    }
+
+    function drawCircles(canvas){
+        var data = [
+            {x:  1, y :  75},
+            {x:  2, y : 100},
+            {x : 3, y :  50},
+            {x : 4, y:  100}
+        ];
+
+		canvas.selectAll(".little")
+		      .data(data)
+		    .enter().append("circle")
+		      .attr("class", "little")
+		      .attr("cx", function(datum, index) {
+					if(index > 0){
+						return data[index - 1].x * 24;
+					}else{
+						return 0;
+					}
+				})
+		      .attr("cy", function(datum) { return datum.x * 24; })
+		      .attr("r", 12);
+	}
+
+	function createCanvas(){
+        var rectDemo = d3.select("#rect").
+                append("svg:svg").
+                attr("width", 400).
+                attr("height", 400);
+
+        return rectDemo;
+    }
+    
+</script>
+</html>
